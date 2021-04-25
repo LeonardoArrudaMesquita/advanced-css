@@ -1,0 +1,912 @@
+Existe uma ordem para o browser reconhecer qual o seletor mais prioritário.
+ 
+1. !important
+2. Inline, IDs, Classes, elements
+3. Ordem dos css externos
+ 
+REM - Root Element -> Pega o tamanho do elemento raiz e aplica a porcentagem. 
+ 
+Ex. Fonte -> 1.5Rem - Fonte raiz -> 16px - 16px * 1.5 = 24px
+ 
+EM -> Pega o valor do elemento pai e aplica a porcentagem.
+ 
+REM e EM foram feitas para serem usadas em fontes porém são boas tbm para serem aplicadas em qualquer elemento pois assim fica mais fácil para
+deixar responsivo. Ao diminuir o tamanho da fonte, os outros elementos diminuirão também.
+ 
+O box-sizing: border-box faz o height e o width contarem tbm o padding e a border. 
+ 
+    Ex: height = tamanho especificado, independente do padding, margin, border e content
+    
+    Width tbm é assim.
+    
+    O bom disso é que facilita
+    
+Todas as unidades de medida são convertidas para pixel pelo browser.
+ 
+O browser encontra o seletor mais específico para decidir qual vai ser convertido primeiro.
+ 
+No caso da %, o seu tamanho vai ser convertido de acordo com os px do elemento pai.
+ 
+Quando não temos valor o browser joga o valor default do elemento caso o elemento não seja herdável, caso seja pega o valor do pai.
+ 
+É IMPORTANTE ENTÃO SABER QUAIS AS TAGS HERDÁVEIS.
+ 
+Padding e margin sempre serão convertidos com base no elemento pai.
+ 
+O QUE É O CASCADE -> É O PROCESSO DE COMBINAR DIFERENTES CSS QUANDO HÁ SELETORES CONFLITANTES.
+ 
+ 
+Herança CSS
+ 
+Browser verifica primeiramente se tem aquele elemento declarado no seletor
+    
+    SE SIM, pega aquele valor obviamente.
+    
+    SENÃO VERIFICA SE é uma propriedade herdável
+    
+        SE SIM pega o valor já computado do elemento pai -> THIS IS INHERITANCE
+        
+        SENÃO seta o valor default daquela propriedade
+        
+Fazendo isso deixamos a manutenção mais fácil de ser feita e escrevemos menos código.
+ 
+A palavra INHERIT força a propriedade a ser herdável.
+ 
+É uma boa prática deixar o font-size do body em % pois assim o valor é calculado para 16px.
+ 
+Ex. 10px.
+ 
+    16px -> 100%
+    10px -> x
+    
+    x = 1000/ 16 = 62.5%
+ 
+Também é bom colocarmos o ::after e o ::before no seletor universal
+ 
+*,
+*::after,
+*::before {
+    propriedade: valor
+}
+ 
+Uma boa prática é definir a fonte raiz como um múltiplo de 10 e dps ir ajustando conforme vc quiser no elementos com REM, assim facilita bem mais na
+hora de desenvolver.
+ 
+Tipos de boxes
+ 
+Block boxes -> Pega 100% do comprimento pai, nada ao lado (ou seja, sempre um em cima do outro), podemos definir altura e comprimento.
+Inline boxes -> Ocupa apenas os tamanho do conteúdo, não quebra a linha como o block, sem podemos definir o tamanho nem o comprimento,
+                padding e margin apenas horizontais.
+ 
+Inline-block boxes -> Mistura do block e do inline, ocupa apenas o espaço contra o conteúdo, não quebra linha e ainda podemos definir altura e comprimento.
+ 
+Posição dos elementos
+ 
+Floats -> Fazem o texto ser alinhado em volta do elemento definido com float.
+ 
+Absolute positioning -> Usamos top, bottom, left e right para posicionar os elementos, que podem ser posicionados sobre o outro.
+ 
+        Para deicidir qual estará na frente de qual, o css usa o z-index
+		
+			- O z-index apenas funciona se tiver um position setado nele.
+        
+ARQUITETURA CSS, COMPONENTES E BEM
+ 
+THINK (Pensar na abordagem) -> Build (Como será escrito) -> Architect (Estrutura que será montada)
+ 
+CDD -> COMPONENT DRIVEN DESIGN -> Dividir o layout em componentes para usar em qualquer lugar e ser melhor para aplicar manutenção.
+ 
+BEM -> Block ELement Modifier
+ 
+O BEM é uma metodologia que prega a combinação de tags com classes css simplesmente nomeadas para facilitar o entendimento do html e a manutenção do css.
+ 
+    Muitas pessoas não gostam de usar pq é feio e chato de escrever.
+ 
+ARQUITETURA CSS
+ 
+The 7-1 pattern
+ 
+7 pastas diferentes para arquivos Sass (Pode ser qualquer outro)
+1 arquivo Sass principal usado para compilar todos os outros arquivos CSS.
+ 
+PASTAS
+ 
+- base/
+- components/
+- layout/
+- pages/
+- themes/
+- abstracts/
+- vendors/
+ 
+BEM 
+ 
+Quando temos um elemento de um BLOCK usamos __ para separalos.
+ 
+Quando temos um modificador de uma classe usamos o -- para indicar que temos um classe modificada (Ligeiramente customizada).
+ 
+O Sass é um preporcessador de CSS, montamos o Sass e depois esse código será convertido para CSS.
+ 
+Usamos esses preprocessadores pq o CSS fica muito extenso, longo e confuso depois de um tempo.
+ 
+    - No Sass é possível ter variáveis.
+    - Aninhar elementos um dentro do outro
+    - Operators para operações matemáticas
+ 
+Temos duas sintaxes do Sass que seriam o Sass e o Scss.
+ 
+    SASS -> Sensitiva identação
+    SCSS -> Sintaxe é similar ao do CSS comum.
+    
+O & escreve o Selector Path até aquele ponto.
+ 
+Sempre quando colocamos um float em um elemento, seus filhos ficam "voando", assim a propriedade clear seta qual lado deve "voar" ou não.
+ 
+    clear: both -> Significa que nada ficará voando;
+ 
+Um mixin é um trecho de código css que pode ser incluído dentro de outro seletor.
+ 
+Pasta base (básico) -> agrupará coisas mais leves para serem importadas dentro das páginas. Ex. Fontes, elementos, corpo e etc.
+Pasta abstract -> Terá Mixins, variáveis e etc.
+Pasta components -> elementos globais que serão utilizados mais de 1x.
+Pasta layout -> É o que agrupa os componentes.
+ 
+Iremos contruir um sistema de grid, similar ao do bootstrap porém com apenas com 4 colunas.
+ 
+A propriedade Max-width define um limite para o width, caso passe, a linha é quebrada para linha de baixo.
+ 
+A propriedade webkit é um novo conjunto de tags do css.
+ 
+-webkit-background-clip: text -> Seta o background apenas no texto, ou sejam precisamos setar a cor do texto para transparente para conseguirmos ver o texto.
+ 
+transform: skewY(); -> distorce a imagem no sentido vertical diagonal;
+ 
+Utilities classes são classes no css que tem apenas um objetivo. Ex: deixar o conteúdo filho centralizado.
+ 
+SEMPRE TEMOS QUE PENSAR NA GENERALIZAÇÃO DO COMPONENTE NO FUTURO
+ 
+http://codingheroes.io/resources/
+ 
+Podemos usar em imagens a propriedade outline invés de borda. 
+ 
+    Ex: outline: 1.5rem solid $color-primary;
+ 
+Com ela podemos o outline-offset que basicamente seria um espaço entre a imagem e a borda.
+ 
+SELETOR DIRETO DE ELEMENTOS FILHOS
+ 
+& > * {}
+ 
+No código acima estamos selecionando todos os elementos filhos diretos de uma seleção. APENAS A PRIMEIRA GERAÇÃO DE FILHOS DAQUELA SELEÇÃO.
+ 
+& * {} 
+ 
+No código acima estamos selecionando todos os elementos filhos, de todas as gerações. Ex: Filho do filho do filho...
+ 
+SECTION TOURS
+ 
+Quando estamos fazendo uma animation que queremos exibir com uma certa perspectiva, usamos a propriedade perspective.
+ 
+Para deixarmos a animação com um efeito realista/3d precisamos setar um hover para o container do card e um para o conteúdo.
+ 
+ESCONDE A PARTE DE TRÁS DE UMA DIV
+ 
+backface-visibility: hidden;
+ 
+The background-blend-mode CSS property sets how an element's background images should blend with each other and with the element's background color.
+ 
+Basicamente podemos setar aquelas famosas variações de cores com o background-blend-mode. Ex. Mais escuro, maior brilho, cores frias e etc.
+ 
+Usamos o clip-path: polygon para deixar a div no formato que queremos e no chrome essa propriedade retira o border-radius, logo tivemos
+que setar os border-radius nesta mesma div.
+ 
+A propriedade shape-outside -> MOLDA A FORMA QUE OS ELEMENTOS EM VOLTA SERÃO EXIBIDOS (Podemos arredondar e etc).
+     Para isso funcionar deve ter um height, um width e um float.
+ 
+Podemos criar um círculo diretamente no css com a propriedade CIRCLE.
+ 
+Quando queremos exibir por inteiro uma imagem de forma responsiva, podemos usar:
+ 
+     HEIGHT: 100%
+    
+    OU
+    
+    WIDTH: 100%
+    
+    Irá depender de qual exibirá a imagem por completo
+    
+        Se width > height = Height: 100%
+        Se height > width = Width: 100%
+        
+Podemos ter SOMENTE um TRANSFORM por seletor pois há sobreposição de propriedade, então devemos deixar todos em um só
+ 
+Variação de como lançar um HOVER
+ 
+// story:hover story__caption
+&:hover &__caption {
+    opacity: 1;
+}
+ 
+No código acima estamos alterando a opacidade da classe &__caption (Que está dentro da story (&:hover)) toda vez que executarmos 
+o evento hover do story.
+ 
+OBS: O código acima deve ser filho.
+
+Agora caso quisessemos selecionar uma classe irmã, podemos fazer do seguinte modo:
+
+&:hover ~ .gallery__caption {
+	opacity: 1;
+}
+ 
+Propriedade FILTER
+ 
+A propriedade FILTER nos permite aplicar filtros em imagens(estilo instagram).
+ 
+Propriedade Object-fit
+ 
+A propriedade object-fit lida com o tamanho do elemento que estamos mexendo.
+ 
+Ex.
+ 
+    object-fit: cover;
+    
+Podemos definir uma cor solida em um gradiente também, quando precisarmos definir uma div dentro de uma imagem, podemos usar esse tricky
+ 
+background-image: linear-gradient(
+        105deg,
+        rgba($color-white, .9) 0%,
+        rgba($color-white, .9) 50%,
+        transparent 50%),
+        url(../img/nat-10.jpg);
+        
+No código acima estamos setando a orientação do gradiente em 105 graus, depois setamos a cor branca do ponto 0 a 50% (Como são cores
+iguais, não terá o degrade) e então setamos a cor transparente de 50% até o final da imagem.
+ 
+O Rem é uma unidade feita para fonte, então ela pegará o valor da fonte.
+ 
+Caso exista algum elemento que não pegue a fonte padrão, podemos utilizar o seguinte esquema:
+ 
+    font-family: inherit;
+    
+Pseudo elementos são diferentes de pseudo classes, pseudo elementos representam coisas que estão na tela.
+ 
+SIBLING SELECTOR
+ 
+Usamos seletores de elementos irmãos para pegar elementos que tem o mesmo pai.
+ 
++ -> Pega o elemento irmão seguinte.
+~ -> Pega o elementos irmão independente donde esteja.
+ 
+form__input:placeholder-shown + form__label {}
+ 
+No código acima estamos selecionando o elemento seguinte ao form__input, que no caso seria o form__label
+ 
+Utilizamos o transform: translate para movimentar elementos;
+
+	Quando queremos jogar um pseudo elemento de um elemento para baixo com a finalidade de esconde-lo, podemos utilizar o 
+	transforma: translateY(100%) pois assim usaremos 100% do height do elemento para movermos para baixo.
+ 
+Não podemos estilizar um radiobutton com css, logo temos que criar um elemento totalmente novo.
+ 
+DISPLAY BLOCK
+ 
+O display block apenas não ocupa 100% do width, apenas o que o conteúdo precisar.
+ 
+Também temos o radial-gradient() que é similar ao linear-gradient, a diferença é que o linear faz o gradiente de um lado até o outro,
+já o radial faz de um ponto e vai se expandindo até o final.
+ 
+Background-size: 100% -> É o tamanho normal da imagem.
+ 
+Toda vez que incluímos um margin ou um padding em um elemento e não surge efeito, possa ser que esse elemento possa ser inline, ai devemos mudar o display.
+ 
+Para customizarmos transições (Tempos de animações) podemos usar o valor cubic-bezier();
+ 
+    Ex. transition: transform .8s cubic-bezier(0.83, 0, 0.17, 1);
+    
+Para criamos um nosso sem mais dificuldades podemos usar o seguinte site:
+ 
+    http://cubic-bezier.com/
+    
+A propriedade transition deve ser colocada no elemento geral que tem a animação.
+
+	- Podemos passar várias propriedades no transition para customizar nossa animação.
+	
+		 transition: transform .2s,
+                    width .4s cubic-bezier(1,0,0,1) .2s,
+                    background-color .1s;   
+ 
+ 
+180deg -> Meio círculo -> 2/4
+90deg -> 1/4
+ 
+Quando formos rotacionar alguma coisa podemos definir o eixo de rotação através da seguinte propriedade.
+    
+    tranform-origin: left/right;
+ 
+Quando nós definimos uma div com display: fixed, temos que setar o top e o left.
+ 
+Um ótimo esquema para deixarmos duas div com o mesmo height, independente do conteúdo, é usando o display: table;
+ 
+    Colocamos o display: table; no elemento pai.
+    Colocamos o display: table-cell; nas "células".
+ 
+e depois colocamos o vertical-align: middle na cell em que queremos centralizar.
+ 
+RESPOSIVIDADE
+ 
+ABORDAGENS - Mobile First vs Desktop First
+ 
+Desktop First -> Primeiro codamos para Desktop e depois fazemos media querys para o layout se adaptar ao mobile.
+ 
+    Media Querys com Max-width: 600;
+    
+    Aplicado em dispositivos com width máximo de 600px.
+        
+Mobile First -> Primeiro codamos para Mobile e depois fazemos media querys para o layout se adaptar ao Desktop.
+ 
+    Media Querys com Min-width: 600;
+    
+Ex.
+    
+        Dispositivo -> Width: 500px;
+        
+        @Media(max-width: 600px) {...}
+        
+        @Media(max-width: 900px) {...}
+        
+        Quais Media Query será aplicada ?
+        
+            Ambas serão aplicadas, o que definirá a prioridade será a ordem, a media query prioritário sempre será a última!
+ 
+Existem várias formas de declarar um breakpoint (width da media query) em uma Media Query, normalmente o pessoal usa os dispositivos mais "famosos" como base
+porém isto é errado pois assim não deixaremos responsivo para os outros dispositivos, então há uma forma melhor que é declarar os breakpoints com base em um grupo
+de dispositivos com certo tamanho porém ainda é errado pq pode ter algum dispositivo que não se adeque ao layout.
+ 
+    MANEIRA PERFEITA
+    
+    Pegar o maior ou menor width e ir aumentando ou diminuindo até ver se quebra o layout, quando quebrar inserimos um breakpoint para concertar.
+    
+    A maioria dos devs não fazem isso pela dificuldade e o trabalho que isso dá.
+    
+Devido a algumas questões de projeto, o forma boa de se definir um breakpoint é muito aceitável.
+ 
+DESKTOP FIRST 
+ 
+    SEMPRE TEMOS QUE DEFINIR OS MEDIA QUERYS DO MAIOR PARA O MENOR POIS ISSO AFETA A ORDEM.
+    
+MOBILE FIRST
+    
+    SEMPRE TEMOS QUE DEFINIR OS MEDIA QUERYS DO MENOR PARA O MAIOR POIS ISSO AFETA A ORDEM.
+ 
+ 
+REM
+ 
+O bom de usar REM em qualquer elemento é que nos fazemos os nossos elementos dependentes do font-size. Então, caso o usuário der zoom, todo o site se adapta.
+ 
+A melhor maneira de deixar o Grid System responsivo é setar o width em 100% pois assim o layout irá quebrar para baixo. Também temos que retirar os gutters.
+ 
+IMAGENS RESPONSIVAS COM HTML
+ 
+A idéia das imagens responsivas é servir a imagem com o tamanho certo para a tela certa, até por motivos de internet.
+        
+    - Resolution Switching - Diminuir a resolução (Height e Width) em telas menores. (Abordagem mais usada normalmente porém não tão boa)
+    - Density Switching - Mudança de resolução de imagem de acordo com a resolução do dispositivo. (Meia resolução) (Mostrar imagens diferentes de acordo com a resolução)
+    
+        Como as telas de smartphone possuem uma resolução maior que a normal, a idéia é entregar uma imagem com densidade de pixel maior
+        e no Desktop que normalmente possui tela pior, entregar uma tela com densidade de pixels menor.
+    
+            Ideal - 1px -> 1px
+            
+        A tela dos smartphones apresentam 2px -> 1px por isso devem possuir imagens com uma resolução maior. Já no Desktop, é diferente
+        pois é 1px -> 1px e se possuir uma imagem com resolução maior acaba ficando estranho.
+        
+        Se a imagem possuir 300 pixels de largura, devemos setar o width: 150px para deixar o 2x px;
+        
+        Celulares - imagens maiores.
+        Desktop - imagens menores.
+ 
+    - Art Direction - Ter imagens diferentes, mantendo os detalhes, para telas menores.(Mostrar telas diferentes de acordo com o tamanho da tela e da resolução)
+    
+OBS: No HTML usamos img src para exibir imagens e no css para usar mais em segundo plano, como em backgrounds.
+ 
+<picture class="footer__logo-box">
+    <source srcset="img/logo-green-small-1x.png 1x, img/logo-green-small-2x.png 2x"
+            media="(max-width: 37.5em)">
+    <img srcset="img/logo-green-1x.png 1x, img/logo-green-2x.png 2x " alt="Full logo">
+</picture>
+ 
+No trecho de código acima estamos declarando a tag picture e dentro dela declaramos a tag source,
+está tag possui a propriedade media que podemos setar o dispositivo que essa imagem será exibida e também podemos
+usar a propriedade srcset que nos permite definir a imagem que será exibida de acordo com a resolução.
+ 
+    srcset="img/logo-green-small-1x.png 1x, img/logo-green-small-2x.png 2x" 
+    
+    Telas com resolução de 1x (1px para 1px) será exibida a img/logo-green-small-1x.png. -> Desktops
+    Telas com resolução de 2x (2x para 1x) será exibida a img/logo-green-small-2x.png. -> Smartphones
+    
+Art Direction
+ 
+                            <img srcset="img/nat-1.jpg 300w, 
+                                         img/nat-1-large.jpg 1000w"
+                                 sizes="(max-width: 900px) 20vw,
+                                        (max-width: 600px) 30vw,
+                                        300px"
+                                 alt="Photo 1" 
+                                 class="composition__photo composition__photo--p1"
+                                 src="img/nat-1-large.jpg"
+                            >
+                            
+A tag acima trabalha de uma forma dinâmica, ou seja, o HTML com base na tela (Tamanho e resolução), nós basicamente especificamos as imagens que temos
+no srcset e passamos no sizes uma media query com o tamanho que a imagem terá mais ou menos, assim o browser decidirá qual imagem deve pegar (Ou pegará a imagem que defimos
+como segundo parâmetro de cada media query). 
+Por padrão o Browser sempre pegará imagens com maior densidade quando tivermos um DPR (Density Pixel Radio) 2x.
+
+width da imagem / tamanho da tela = porcentagem da tela que deverá ser transformada em VW.
+
+233 / 500px = 0,466 = 46VW.
+
+OBS: Para testar melhor o srcset/ sizes recomendo utilizar uma guia anônima sempre limpando o cache a cada screen size testado.
+ 
+IMAGENS RESPONSIVAS COM CSS
+ 
+Para deixarmos uma imagem responsiva o css é bem simples, apenas precisamos usar medias querys utilizando o min-resolution. Por exemplo,
+ 
+@media (min-resolution: 192dpi) and (min-width: 600px) {
+        background-image: linear-gradient(
+        to right bottom,
+        rgba($color-primary-light, 0.8),
+        rgba($color-primary-dark, 0.8)),
+        url("../img/hero.jpg");
+}
+ 
+Acima temos uma media query setada para ser exibida na resolução mínima de 192dpi (Density per inches), que seria a resolução de dispositivos da Apple (Alta resolução).
+Não faz sentido ter uma imagem gigante para ser exibida em uma dispositivo pequeno.
+ 
+OBS: Sempre temos que pensar na dimensão do dispositivo x sua resolução, ou seja, se temos um celular com 600 width de tela e 2x de resolução (Padrão de celular), o ideial é ter uma imagem
+600 x 2 = 1200px.
+ 
+-- CanIUse --
+ 
+Para saber se aquela propriedade moderna possui suporte para os browsers mais antigos podemos consultar no site 
+https://caniuse.com/
+ 
+BACKDROP-FILTER 
+ 
+A propriedade Backdrop-Filter aplica um filter no elemento que está atrás do elemento aplicado.
+ 
+@support() {}
+ 
+A Query acima verifica se a propriedade passada como parâmetro tem suporte ao browser que estamos acessando, se tiver o browser
+aplica as propriedades que passamos dentro da query.
+ 
+@media (min-resolution: 192dpi) Não funciona no Opera, então precisamos usar a seguinte propriedade.
+ 
+    -webkit-min-device-pixel-ratio: 2
+    
+No final do curso do Natours aprendemos melhor como criar pacotes já buildados com o npm, basicamente nós juntamos todos os arquivos css 
+que existem e fazemos o autoprefix que seria adicionar a tag de suporte dos browser (-webkit e etc). Após isto nós comprimimos o arquivo css
+que foi gerado pelo prefix retirando as linhas em branco e os espaços (famoso arquivo .min) pois assim diminuímos o tamanho do arquivo de uma
+forma bastante SIGNIFICATIVA. 
+ 
+Media Query
+ 
+É uma boa prática usar o only screen em media querys pois assim prevenimos de usar aquele estilo em arquivos de impressão.
+    
+    @media only screen and (max-width: 56.25em)
+    
+A ideia é nunca deixarmos um elemento no mobile que possua hover no desktop.
+ 
+Display flex
+ 
+- Facilita o posicionamente dos elementos
+- Substitui o float
+- Mudou a forma que construimos um elemento unidimensional
+ 
+O container que setamos o display flex é chamado de Flex container e todos os filhos desse container são chamados de flex itens.
+ 
+O Eixo default do display flex é horizontal. Então temos o seguinte:
+ 
+Main Axis - Eixo horizontal
+Cross Axis - Eixo vertical
+ 
+O eixo principal pode ser mudado por isso é importante saber qual é.
+ 
+word wrap Vs word break
+
+	word wrap joga a palavra que tem width maior que a div para a próxima linha.
+	word break quebra a palavra e joga para a próxima linha para evitar overflow de itens.
+
+FLEX-CONTAINER
+ 
+    Flex-direction -> Define o main axis.
+ 
+        flex-direction: row (default), row-reverse, column, column-reverse
+ 
+    Flex-wrap -> Define se os flex-itens devem serem quebrados para uma nova linha caso não tenha espaço suficiente no container.
+    
+        flex-wrap: nowrap (default), wrap, wrap-reverse.
+        
+    Justify-content -> Define como os flex-itens serão alinhados de acordo com o main axis (Eixo principal).
+    
+        justify-content: flex-start (default), flex-end, center, space-between, space-around, space-evenly.
+        
+    align-items -> Define como os flex-itens serão alinhados de acordo com o Cross axis (Eixo cruzado).
+    
+        align-items: stretch (default), flex-start, flex-end, center, baseline.
+        
+    align-content -> Usado quando há mais de uma linha de flex-items, define como essas linhas serão alinhadas de acordo com Cross axis (Eixo Cruzado)
+    se houver espaço suficiente.
+    
+        align-content: stretch (default), flex-start, flex-end, center, space-between, space-around.
+        
+    OBS: To stretch - Esticar
+ 
+FLEX-ITEMS
+ 
+    Align-self -> Muita similar ao align-items mas para um único flex-item. Alinha um só flex-item de acordo com o Cross axis.
+    
+        align-self: auto (default), stretch, flex-start, flex-end, center, baseline.
+        
+    order -> Define a ordem que um flex-item deve aparecer em um flex-container.
+ 
+        order: 0 <integer>
+        
+    flex-grow -> Define o valor do width (Aumenta) em relação aos items filhos e ao espaço do flex container.
+    
+        flex-grow: 0 <integer>
+		
+		Ex:
+			
+			flex: 1 ou flex-grow: 1 -> Estamos dizendo que o elemento pegará todo o espaço do container.
+			
+			Para saber o tamanho que o flex item vai ter podemos pegar o width do container e dividir pela somatória
+			dos flex-grow, assim saberemos o tamanho de 1 elemento (flex-grow: 1) para que depois façamos a multiplicação e
+			descobir o tamanho dos outros flex items (flex-grow: 2 ou +).
+        
+    flex-shrink -> Define o valor do width (Diminui) em relação aos items filhos ao espaço do flex container.
+    
+        flex-shrink: 1 <integer>
+        
+    OBS: To shrink - encolher
+    
+    flex-basis -> Define o width padrão de um flex-item.
+        
+        flex-basis: auto <length>
+    
+    OBS: Tem a forma simplificada dessas propriedades
+    
+        flex: 0 1 auto
+		
+	Invés de usar width no flex items podemos usar o flex-basis
+	
+		flex: 0 0 60%;
+		
+		No código acima estamos setando que o flex item terá tamanho de 60% e caso quisemos preencher o resto do container é
+		só usar o flex: 1
+        
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+OBS: Quando queremos fazer um layout que o justify-content nem o align-items sejam úteis, como no caso de alinhamentos
+não uniformes ou lineares, podemos usar um ÓTIMO trick que é utilizar 
+	
+	margin-right: auto;
+	
+Assim a seleção permanecerá apenas no elemento e todo o espaço disponível que restar vai ser definido como margin.
+        
+flex-direction: column -> Troca o eixo principal para vertical de cima para baixo;
+flex-direction: column-reverse -> Troca o eixo principal para vertical de baixo para cima;
+ 
+justify-content: space-between; -> Distribui o espaço do container entre os flex-items porém não colocar espaço nas laterais do flex-container.
+ 
+justify-content: space-around; -> Distribui o espaço do flex-container colocando o mesmo espaço entre o lado esquerdo e o lado direito de cada
+flex-item, fazendo o espaço entre o flex-items fique 2x maior que o espaço nas laterais do flex-container.
+ 
+justify-content: space-evenly; -> Distribui o espaço do container de forma igual, inclusive nas laterais do container.
+ 
+justify-content: flex-start; -> Joga os elementos pro começo do container sem espaçamento entre os flex-items.
+justify-content: flex-end; -> Joga os elementos pro fim do container sem espaçamento entre os flex-items.
+justify-content: center; -> Joga os elementos pro centro do container sem espaçamento entre os flex-items.
+ 
+align-items: center; -> Centraliza os flex-items no centro do Cross axis (Eixo cruzado).
+align-items: flex-start; -> Alinha os flex-items no começo do Cross axis (Eixo cruzado).
+align-items: flex-end; -> Alinha os flex-items no fim do Cross axis (Eixo cruzado).
+align-items: stretch; -> Estica todos os flex-items para ficar com o height ou width do tamanho do Cross axis (Eixo cruzado).
+algin-items: baseline; -> Alinha os flex-items no Cross axis (Eixo cruzado) de acordo com o texto do flex-item.
+ 
+flex-grow: 1; -> Faz com oq o item cresça até atingir o tamanho máximo que ele consegue (Pode ser um número maior que 1).
+ 
+flex-basis: 20%; -> Defini que o flex-item terá 20% do container;
+ 
+flex-shrink: 1; -> Significa que o flex-item poderá diminuir de acordo com o tamanho da tela.
+flex-shrink: 0; -> Significa que o flex-item NÃO poderá diminuir de acordo com o tamanho da tela.
+ 
+align-content: flex-start; -> Quanto temos mais uma linha flex e ambas não estão uma em cima da outra, precisamos utilizar o align-content.
+allgin-content: stretch; -> Esticará as linhas flex, ou seja, os items não ficaram esticados como no align-items ou no justify-content;
+ 
+OBS: A melhor maneira de deixamos um elemento em baixo do outro é usando flex-direction: colunm
+-------------------------------------------------------------------------------------------------------------------------------------------
+ 
+Estamos setando que não queremos que o elemento cresça se tiver espaço sobrando no lfex-container, nem que diminua quando o espaço a tela
+diminuir pois isso o flex-basis já está fazendo e por últimos que o flex-item terá width igual a 18% do container;
+ 
+flex: 0 0 18%;
+ 
+É uma boa prática invés de usar icones, utilizar SVGs pois assim fica melhor de estilizar e também ajuda na acessibilidade para cegos.
+ 
+SVG 
+ 
+Para incluir um SVG podemos fazer da seguinte forma.
+ 
+<svg class="search__icon">
+    <use xlink:href="img/sprite.svg# icon-magnifying-glass"></use>
+</svg>
+ 
+Podemos ter um vários flex-container aninhados, é totalmente normal.
+ 
+No código abaixo estamos selecionando o botão quando o focus do input for selecionado.
+ 
+&__input:focus + &__button {
+        background-color: var(--color-grey-light-3);
+}
+ 
+Para mudar a cor de um SVG temos que usar a propriedade fill.
+ 
+    fill: green;
+    
+> -> Pega os filhos
++ -> Pega os irmãos
+
+---------------------------------------------------------------------------------------------------------
+
+Um esquema para jogar o item para baixo quando temos 2 elementos é setar justify-content: space-between.
+
+CURRENT COLOR
+
+Conseguimos pegar a cor ATUAL da fonte do elemento pai através do CurrentColor, então é bem legal usar isso quando temos
+um efeito de hover, assim não precisamos setar a cor tanto no elemento pai quanto no filho.
+
+---------------------------------------------------------------------------------------------------------
+
+Caso queiramos alinhar alguns elementos precisamos sempre setar o pai com display: flex.
+
+---------------------------------------------------------------------------------------------------------
+
+Sempre que criarmos um elemento before ou after com um position:absolute é legal setar o seu próprio elemento com position:relative
+
+ELEMENTO FIGURE
+
+Podemos utilizar o elemento figure e setarmos dentro uma imagem e um figcaption, que seria a legenda.
+
+PROPRIEDADE MASK 
+
+Para "pintarmos" uma imagem podemos usar a propriedade mask que é bastante nova.
+
+	background-color: var(--color-primary);
+	-webkit-mask-image: url(../img/chevron-thin-right.svg);
+    -webkit-mask-size: cover;
+
+---------------------------------------------------------------------------------------------------------
+
+Usamos a tag box-decoration-break: clone para forçar as linhas provenientes da quebra de linha seguirem as mesmas propriedades.
+
+---------------------------------------------------------------------------------------------------------
+
+GRID
+
+Usamos o GRID para complementar o display flex pois o grid utiliza os dois eixos principais, logo é ótima para layout enquanto
+que o display flex só trabalha apenas com 1, sendo ótimo para elementos.
+
+O diplay grid é similar ao display flex, temos o Grid Container e o Grid items, a principal diferença será os eixos, aqui teremos
+o eixo de coluna (Column axis) e o eixo da linha (Row axis).
+
+As linhas horizontais e verticais que separam as linhas e as colunas são chamadas de Grid lines e 
+são numerados (começando por 1), já o espaço entre as linhas e as colunas são chamada de gutters.
+
+Uma linha, independentemente se é horizontal ou vertical, é chamada de Grid Track.
+
+O encontro de duas linhas de Grid horizontais com duas linhas de grid verticais são chamadas de Grid Area.
+
+Quando uma célula está ao lado de uma Grid Area, ela é chamada de grid cell.
+
+DENIFINDO AS LINHAS E COLUNAS
+
+	grid-template-rows -> Definimos as rows do nosso layout;
+	grid-template-columns -> Definimos as columns do nosso layout;
+
+	grid-template-rows: 150px 150px;
+	grid-template-columns: 150px 150px 150px;
+
+	MAX-CONTENT, MIN-CONTENT e MINMAX
+		
+		Invés do tamanho da column ou row podemos passar:
+
+		max-content (Espécie de width: auto).
+		
+			Este valor dimensiona o tamanho da coluna / linha de acordo com o conteúdo SEM QUEBRAR O CONTEÚDO.
+		
+				grid-template-columns: max-content 1fr 1fr max-content;
+		
+		
+		min-content.
+		
+			Este valor faz com que a coluna / linha tenha o tamanho mínimo para se adaptar ao conteúdo, logo, este valor
+			QUEBRARÁ O CONTEÚDO.
+			
+		minmax
+		
+			Com este valor conseguimos definir o valor mínimo e máximo da coluna / linha.
+			
+				Ex: grid-template-rows: repeat(2, minmax(150px, min-content));
+				
+			No código acima estamos definindo que as linhas daquele layout terão height inicial (Valor mínimo) de 150px e 
+			valor máximo do tamanho do conteúdo (Caso necessite).
+
+	AUTO-FILL E AUTO-FIT
+	
+		auto-fill -> Podemos definir o auto-fill para que criar o próprio Grid pegue o width do Grid Container e com base
+		no tamanho que passamos pra coluna, criar N colunas, logo, desta maneira não temos um número fixo de colunas como
+		haviamos visto.
+		
+			Ex: grid-template-columns: repeat(auto-fill, 100px);
+			
+			N Colunas porém todos os itens com tamanho de 100px, se sobrar espaço completa com outros itens.
+			
+		auto-fit -> Também cria as colunas com base no width do Grid Container porém neste caso se sobrar espaço ao exibir
+		os Grid itens, esses itens serão ocultos (Width: 0), logo serão exibidos apenas os itens explicitos.
+		
+			Ex: 
+			
+				grid-template-columns: repeat(auto-fit, 100px);
+				grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+				
+		OBS: Caso o width do Grid Container não seja suficiente para agrupar as colunas em uma line track só, os itens serão 
+		quebrados para a próxima line track.
+
+OBS: Para não ter que ficar repetindo valor seguidos podemos utilizar o repeat();
+
+	Ex: 
+		repeat(2, 150px);
+		repeat(2, 150px) 300px;
+
+Com as seguintes propriedades podemos setar os gutters das linhas e das colunas.
+	
+	grid-row-gap: 30px;
+	grid-column-gap: 50px;  
+	grid-gap: 30px;
+	
+O display Grid introduziu uma nova medida, chamada de "fr" (Fractional Unit/ Unidade de fração), esta unidade de medida obtêm 
+todo o espaço disponível da célula da Grid, sendo assim apenas pode ser usada em conjunto ao Grid.
+
+OBS: 2fr possui o dobro de tamanho que um 1fr.
+
+Podemos mudar as ordem dos grid items também.
+
+&--1 {
+    background-color: orangered;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+
+No código acima estamos dizendo que aquele item estará entre as grid lines rows 2 e 3 e grid line columns 2 e 3;
+
+Também há uma forma simplificada de escrever a mesma coisa:
+
+	grid-row: 1 / 2;
+    grid-column: 3 / 4;
+
+	Ex: grid-row: grid-line-starts / grid-line-ends
+	
+Há ainda um forma mais simplificada do que essa:
+
+	Ex: grid-area: 1 / 3 / 2 / 4;
+	
+	grid-area: grid-line-starts, grid-line-starts, grid-line-ends, grid-line-ends;
+	
+Nós não podemos ter mais um grid-cell posicionado no mesmo lugar pois um esconderá o outro a não ser que usamos z-index para
+exibir a célula;
+
+Para uma Grid cell pegar uma área tbm é possível declarar o ponto de início e dizer quantas células aquela célula pegará.
+
+	grid-column: 1 / span 3;
+	
+No código acima estamos dizendo que a célula começará na coluna 1 e ocupará 3 células (Ela e mais 2);
+
+Podemos também utilizar o -1 para pegar todas as células até o final daquela grid line.
+
+	grid-column: 1 / -1;
+	
+Aquela célula começará na coluna 1 e irá até a última célula.
+
+------------------------------------------------------------------------------------------------------------
+
+MÉTODO IDEAL DE UTILIZAR DISPLAY GRID
+
+Existe um outro método para declarar a área das células que é nomeando as linhas e as colunas.
+
+grid-template-columns: repeat(3, [col-start] 1fr [col-end]) .7fr [grid-end];  
+  
+grid-template-rows: [header-start] 1fr 
+                    [header-end box-start] 2fr 
+                    [box-end main-start] 4fr 
+                    [main-end footer-start] 1fr
+                    [footer-end];    
+
+Deste jeito podemos agora utilizar os nomes invés dos números.
+
+	Ex: 
+		grid-column: col-start 1 / grid-end;
+		grid-row: box-start / main-end;
+
+------------------------------------------------------------------------------------------------------------
+
+IDEAL PARA LAYOUTS MENORES
+		
+Há também um terceiro método que é feito através da nomeação de areas do grid. Para isto usamos a propriedade
+grid-template-areas para nomear cada celula de nosso grid.
+
+	grid-template-areas: "head head head head"
+						 "box box box side"
+						 "main main main side"
+						 "foot foot foot foot";
+
+Depois é só setarmos a propriedade grid-area atribuindo o nome da célula que queremos preencher
+
+	.main-content {
+		background-color: greenyellow;
+		grid-area: main;
+	}
+
+A célula preencherá todo aquelas áreas que possuirem aquele nome. 
+
+OBS: É obrigatório nomear TODAS as células. Caso alguma célular não precisar se preenchida ou algo do tipo, devemos setar
+seu nome com "." (ponto).
+
+--------------------------------------------------------------------------------------------------------------
+
+Caso tivermos mais itens no HTML do que o número de linhas e colunas definidos no Grid Container, os grid items a mais
+não terão tamanho definido pois não foram declarados no grid-template-rows.
+
+Para resolver isso usamos a seguinte propriedade.
+
+	grid-auto-rows: 150px;
+	grid-auto-columns: 150px;
+
+Estes a mais sempre virão como rows pois a seguinte propriedade possui o seguinte default value 
+
+	grid-auto-flow: row;
+
+Para revertermos isso basta aplicar o value column -> grid-auto-flow: column;
+
+OBS: Caso quisessemos não deixar "Células vazias (Buracos)" em nosso layout devemos utilizar o value dense;
+
+	Ex. grid-auto-flow: row dense;
+
+Os items que não foram definidos no grid são chamados de "Implicit Grid Items", enquanto os que foram definidos são 
+chamados de "Explicit Grid Items".
+
+--------------------------------------------------------------------------------------------------------------
+
+Para alinhar os GRID ITEMS NAS ÁREAS OU CÉLULAS usamos as seguintes propriedades:
+	
+	Para alinhas os Grid items
+
+		align-items -> Default: Stretch / Center / End / Start
+		justify-items > Default: Stretch
+
+	Para alinhar um único Grid item
+	
+		align-self
+		justify-self
+	
+	Em comparação ao Display flex que utilizamos justify-content, aqui utilizaremos justify-items.
+
+Para alinhas as GRID TRACKS usamos as seguintes propriedades:
+
+	justify-content
+	align-content
+	
+--------------------------------------------------------------------------------------------------------------
+
