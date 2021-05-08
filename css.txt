@@ -143,8 +143,22 @@ O & escreve o Selector Path até aquele ponto.
 Sempre quando colocamos um float em um elemento, seus filhos ficam "voando", assim a propriedade clear seta qual lado deve "voar" ou não.
  
     clear: both -> Significa que nada ficará voando;
- 
-Um mixin é um trecho de código css que pode ser incluído dentro de outro seletor.
+  
+MIXIN VS EXTEND
+
+	Ambos conseguem incluir propriedades dentro de um seletor porém há pequenas diferenças entre os dois.
+	
+	MIXIN
+	
+		Com os mixins podemos incluír propriedades dentro de outro seletor. Além disso, também é possível passar valores por parâmetro, 
+		muito parecido com uma função.
+
+	EXTEND
+
+		Com extend podemos incluír propriedades dentro de outro seletor, a diferença que não podemos passar valores por parâmetro.
+		
+	O uso de ambos depende do contexto que estão sendo inseridas. 
+	Outra diferença importante que difere os dois é forma que são compilados.
  
 Pasta base (básico) -> agrupará coisas mais leves para serem importadas dentro das páginas. Ex. Fontes, elementos, corpo e etc.
 Pasta abstract -> Terá Mixins, variáveis e etc.
@@ -704,7 +718,7 @@ são numerados (começando por 1), já o espaço entre as linhas e as colunas s�
 
 Uma linha, independentemente se é horizontal ou vertical, é chamada de Grid Track.
 
-O encontro de duas linhas de Grid horizontais com duas linhas de grid verticais são chamadas de Grid Area.
+O encontro de duas linhas ou mais de Grid horizontais com duas linhas de grid verticais são chamadas de Grid Area.
 
 Quando uma célula está ao lado de uma Grid Area, ela é chamada de grid cell.
 
@@ -726,11 +740,29 @@ DENIFINDO AS LINHAS E COLUNAS
 		
 				grid-template-columns: max-content 1fr 1fr max-content;
 		
+			Ou seja, seta a coluna com o tamanho máximo do conteúdo.
 		
 		min-content.
 		
 			Este valor faz com que a coluna / linha tenha o tamanho mínimo para se adaptar ao conteúdo, logo, este valor
 			QUEBRARÁ O CONTEÚDO.
+			
+			Ex. Grid column com min-content com texto
+			
+				Tag:
+			
+					<p>Teste de min-column feito pelo Leonardo</p>
+				
+				Componente com min-content:
+				
+					Teste
+					de min
+					column
+					feito
+					pelo
+					Leonardo
+					
+			Ou seja, a grid adaptou o conteúdo para conseguir pegar o menor tamanho de coluna
 			
 		minmax
 		
@@ -743,16 +775,31 @@ DENIFINDO AS LINHAS E COLUNAS
 
 	AUTO-FILL E AUTO-FIT
 	
-		auto-fill -> Podemos definir o auto-fill para que criar o próprio Grid pegue o width do Grid Container e com base
-		no tamanho que passamos pra coluna, criar N colunas, logo, desta maneira não temos um número fixo de colunas como
+		auto-fill -> Podemos definir o auto-fill para que o próprio Grid pegue o width do Grid Container e com base
+		no tamanho que passamos para cada coluna, criar N colunas, logo, desta maneira não temos um número fixo de colunas como
 		haviamos visto.
-		
+				
 			Ex: grid-template-columns: repeat(auto-fill, 100px);
 			
 			N Colunas porém todos os itens com tamanho de 100px, se sobrar espaço completa com outros itens.
 			
 		auto-fit -> Também cria as colunas com base no width do Grid Container porém neste caso se sobrar espaço ao exibir
 		os Grid itens, esses itens serão ocultos (Width: 0), logo serão exibidos apenas os itens explicitos.
+		
+			Em poucas palavras o auto-fit cria as colunas de acordo com o width disponível.
+			
+			RESPOSIVIDADE
+			
+				Um trick bem interessante é utilizar o auto-fit com min-max para deixarmos responsivo
+				
+					Ex:
+					
+						grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+						
+				No código acima estamos dizendo que o grid container irá criar N colunas com tamanho mínimo de 150 px e máximo de uma unidade fracional com base
+				no width que estiver disponível.
+				
+				Caso não tenha width, os elementos são empilhados, tudo isso sem precisar de media queries.
 		
 			Ex: 
 			
@@ -814,7 +861,7 @@ Para uma Grid cell pegar uma área tbm é possível declarar o ponto de início 
 	
 No código acima estamos dizendo que a célula começará na coluna 1 e ocupará 3 células (Ela e mais 2);
 
-Podemos também utilizar o -1 para pegar todas as células até o final daquela grid line.
+Podemos também utilizar o -1 para pegar todas as células EXPLICITAS (Que foram explicitadas com grid-template-rows ou grid-template-columns) até o final daquela grid line.
 
 	grid-column: 1 / -1;
 	
@@ -864,6 +911,9 @@ A célula preencherá todo aquelas áreas que possuirem aquele nome.
 OBS: É obrigatório nomear TODAS as células. Caso alguma célular não precisar se preenchida ou algo do tipo, devemos setar
 seu nome com "." (ponto).
 
+OBS: Uma sacada muito boa quando temos uma célula em branco em um grid é preenche-la com a coluna, utilizando o span invés de
+definir o começo do conteúdo em uma célula em específico.
+
 --------------------------------------------------------------------------------------------------------------
 
 Caso tivermos mais itens no HTML do que o número de linhas e colunas definidos no Grid Container, os grid items a mais
@@ -908,5 +958,125 @@ Para alinhas as GRID TRACKS usamos as seguintes propriedades:
 	justify-content
 	align-content
 	
+--------------------------------------------------------------------------------------------------------------
+
+CRIANDO LINHAS E COLUNAS
+
+	PASSO A PASSO
+
+		1. Definir o grid container
+		2. Definir as linhas
+		3. Definir as colunas
+		4. Nomear o começo e o termino das colunas
+		5. Definir onde que começa e termina cada grid-area através dos elementos filhos.
+
+		Para criarmos uma Row responsiva tanto em altura quanto em largura temos que definir seu tamanho em ViewportWidth.
+
+			Ex. 
+
+				grid-template-rows: 40vw;
+			
+		Assim, quando diminuirmos o comprimento da página, a linha também diminuirá de tamanho.
+
+		OBS: É boa prática criarmos as linhas utilizando VW e VH por motivos de reponsividade.
+
+	GRID SYSTEM E TAMANHO MÍNIMO E MÁXIMO DA COLUNA
+
+		Aqui estamos definindo que nosso Grid System terá 8 colunas (O apropriado é ter 12) e cada coluna terá no mínimo o tamanho mínimo para exibir 
+		o conteúdo (Mesmo quebrando) e no máximo 140 px.
+
+			grid-template-columns: repeat(8, minmax(min-content, 14rem));	
+					
+	Ex. Definindo Grid rows e grid cols
+	
+		.container {
+			display: grid;
+			grid-template-rows: 80vh min-content 40vw repeat(3, min-content);
+			grid-template-columns: 
+				[sidebar-start] 8rem 
+				[sidebar-end full-start] 1fr 
+				[center-start] repeat(8, [col-start] minmax(min-content, 14rem) [col-end]) 
+				[center-end] 1fr [full-end];
+		}
+
+	Após isto, precisamos setar onde começa e termina cada grid-area:
+	
+		.sidebar {
+			background-color: $color-primary;
+			grid-column: sidebar-start / sidebar-end;
+			grid-row: 1 / -1;
+		}
+		
+		.header {
+			background-color: $color-grey-dark-1;
+			grid-column: full-start / col-end 6;
+		}
+	
+PODEMOS TER COLUNAS QUE NÃO USAMOS DESDE QUE FAÇA SENTIDO
+
+	Cada vez mais estamos vendo layouts com seções cheias de conteúdo e algumas seções com o conteúdo centralizado 
+	no meio, para isto, criamos uma coluna as extrema direita e na extrema esquerda com 1fr de largura, assim o conseguimos
+	centralizar o conteúdo para o meio dessas duas colunas que foram criadas.
+
+FALHA DO DISPLAY GRID
+
+	Quando temos um display grid, ou seja, um grid container e dentro desse mesmo container temos um outro container, somos obrigados a definir as colunas novamente
+	com a propriedade.
+
+		grid-template-columns
+		
+	Talvez num futuro próximo poderemos herdar as colunas do grid pai mas no exato momento isso não é possível. :C
+
+	Para contornar isso então é preciso vc setar a seguinte propriedade dentro de um grid item.
+
+		display: grid
+	
+ESPAÇO ENTRE GRID ITENS
+
+	Para aumentar o espaço entre os grid-itens usamos a propriedade
+	
+		grid-gap: 6rem
+		
+	E para aumentar o espaço de fora do grid container usamos o margin mesmo.
+
+CUIDADOS COM ALIGN-ITEMS
+
+	O valor default do align-items do display: grid é o stretch, ou seja, esticado, então o grid container irá
+	esticar as linhas para se adaptar ao conteúdo das células.
+	
+	Logo se houver alguma diferença de tamanho de conteúdo entre as células (Ex: texto), as linhas podem ter
+	tamanhos diferentes, para solucionar isso é preciso setar outro valor para o align-items.
+	
+		align-items: start
+		
+QUANDO USAR GRID
+
+	- Quando temos que definir o layout de uma página.
+	- Quando temos componentes simples, pequenos e bidirecionais.
+	
+	Utilizar Grid quando é possível evita uma complexidade desnecessária, evitamos usar padding, margins e media queries.
+	
+--------------------------------------------------------------------------------------------------------------
+
+FONT WEIGHT E LINE HEIGHT
+
+	A propriedade font-weight define a grossura da fonte em uma valor numérico.
+	
+		font-weight: 400 -> Grossura normal (default)
+		font-weight: 700 -> Negrito
+		
+	A propriedade line-height define o tamanho da linha.
+	
+		line-height: 1.2 -> Tamanho normal (default)
+		line-height: 1.6 -> Tamanho um pouco maior (default)
+
+--------------------------------------------------------------------------------------------------------------
+
+
+		
+--------------------------------------------------------------------------------------------------------------
+
+OBS: Quando rodarmos o script "start" podemos rodar apenas "npm start" invés de "npm run start"
+
 --------------------------------------------------------------------------------------------------------------
 
