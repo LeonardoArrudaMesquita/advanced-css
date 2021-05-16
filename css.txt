@@ -125,7 +125,7 @@ Quando temos um elemento de um BLOCK usamos __ para separalos.
  
 Quando temos um modificador de uma classe usamos o -- para indicar que temos um classe modificada (Ligeiramente customizada).
  
-O Sass é um preporcessador de CSS, montamos o Sass e depois esse código será convertido para CSS.
+O Sass é um preprocessador de CSS, montamos o Sass e depois esse código será convertido para CSS.
  
 Usamos esses preprocessadores pq o CSS fica muito extenso, longo e confuso depois de um tempo.
  
@@ -252,6 +252,10 @@ Agora caso quisessemos selecionar uma classe irmã, podemos fazer do seguinte mo
 	opacity: 1;
 }
  
+TEXT ALIGN 
+
+	Quando temos um elemento de texto não é precisa usar o display para centralizar no meio, a proprieda TEXT-ALIGN já basta.
+
 Propriedade FILTER
  
 A propriedade FILTER nos permite aplicar filtros em imagens(estilo instagram).
@@ -638,6 +642,7 @@ align-content: flex-start; -> Quanto temos mais uma linha flex e ambas não est�
 allgin-content: stretch; -> Esticará as linhas flex, ou seja, os items não ficaram esticados como no align-items ou no justify-content;
  
 OBS: A melhor maneira de deixamos um elemento em baixo do outro é usando flex-direction: colunm
+OBS: Quando temos um elemento de texto não é precisa usar o display para centralizar no meio, a proprieda TEXT-ALIGN já basta.
 -------------------------------------------------------------------------------------------------------------------------------------------
  
 Estamos setando que não queremos que o elemento cresça se tiver espaço sobrando no lfex-container, nem que diminua quando o espaço a tela
@@ -727,6 +732,8 @@ DENIFINDO AS LINHAS E COLUNAS
 	grid-template-rows -> Definimos as rows do nosso layout;
 	grid-template-columns -> Definimos as columns do nosso layout;
 
+	OBS: As vezes conseguimos setar as colunas e o próprio grid já define para nós as linhas certinho;
+
 	grid-template-rows: 150px 150px;
 	grid-template-columns: 150px 150px 150px;
 
@@ -785,6 +792,8 @@ DENIFINDO AS LINHAS E COLUNAS
 			
 		auto-fit -> Também cria as colunas com base no width do Grid Container porém neste caso se sobrar espaço ao exibir
 		os Grid itens, esses itens serão ocultos (Width: 0), logo serão exibidos apenas os itens explicitos.
+		
+			"Quero quantas colunas caberem no grid container"
 		
 			Em poucas palavras o auto-fit cria as colunas de acordo com o width disponível.
 			
@@ -939,12 +948,12 @@ chamados de "Explicit Grid Items".
 
 --------------------------------------------------------------------------------------------------------------
 
-Para alinhar os GRID ITEMS NAS ÁREAS OU CÉLULAS usamos as seguintes propriedades:
+Para alinhar os GRID ITEMS NAS ÁREAS OU CÉLULAS / CONTEÚDO usamos as seguintes propriedades:
 	
 	Para alinhas os Grid items
 
 		align-items -> Default: Stretch / Center / End / Start
-		justify-items > Default: Stretch
+		justify-items > Default: Stretch / Center / End / Start
 
 	Para alinhar um único Grid item
 	
@@ -953,11 +962,13 @@ Para alinhar os GRID ITEMS NAS ÁREAS OU CÉLULAS usamos as seguintes propriedad
 	
 	Em comparação ao Display flex que utilizamos justify-content, aqui utilizaremos justify-items.
 
-Para alinhas as GRID TRACKS usamos as seguintes propriedades:
+Para alinhar as GRID TRACKS (Linhas do grid) usamos as seguintes propriedades:
 
 	justify-content
 	align-content
 	
+OBS: Quando temos um elemento de texto não é precisa usar o display para centralizar no meio, a proprieda TEXT-ALIGN já basta.
+
 --------------------------------------------------------------------------------------------------------------
 
 CRIANDO LINHAS E COLUNAS
@@ -1056,6 +1067,29 @@ QUANDO USAR GRID
 	
 	Utilizar Grid quando é possível evita uma complexidade desnecessária, evitamos usar padding, margins e media queries.
 	
+QUANDO USAR O DISPLAY FLEX COM O DISPLAY GRID
+
+	- Sempre quando tivermos um layout unidimensional devemos fazer está combinação.
+	
+GRID COM IMAGENS
+
+	As imagens tem suas dimensões próprias, então elas NÃO VÃO esticar para caber na grid cell.
+	
+GRID COM SOBREPOSIÇÃO
+
+	Para posicionarmos um elemento dentro de uma grid cell em cima de outro elemento precisamos posicionalos EXPLICITAMENTE com as seguintes propriedades
+		
+		grid-row
+		grid-column
+	
+COMO UM ELEMENTO DE UMA CÉLULA PODE INVADIR OUTRA CÉLULA
+
+	Podemos usar o transform para mover o elemento para a célula vizinha.
+	
+		transform: translateY(-3rem);
+		
+	Podemos usar o width ou o height para aumentarmos nosso elemento a ponto que ele ultrapasse a cell vizinha.
+
 --------------------------------------------------------------------------------------------------------------
 
 FONT WEIGHT E LINE HEIGHT
@@ -1072,7 +1106,16 @@ FONT WEIGHT E LINE HEIGHT
 
 --------------------------------------------------------------------------------------------------------------
 
+ASPAS NO HTML
 
+	Para colocar algum texto entre aspas usamos as seguintes marcações
+	
+		&ldquo; -> Abre aspas
+		&rdquo; -> Fecha aspas
+		
+	Ex.
+	
+		<h2 class="heading-2">&ldquo;The best decision of our lives&rdquo;</h2>
 		
 --------------------------------------------------------------------------------------------------------------
 
