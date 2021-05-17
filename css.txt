@@ -262,11 +262,13 @@ A propriedade FILTER nos permite aplicar filtros em imagens(estilo instagram).
  
 Propriedade Object-fit
  
-A propriedade object-fit lida com o tamanho do elemento que estamos mexendo.
+	A propriedade object-fit lida com o tamanho do elemento que estamos mexendo. É muito utilizada com imagens.
  
-Ex.
- 
-    object-fit: cover;
+	Ex.
+	 
+		object-fit: cover;
+		
+	Para funcionar temos que setar tanto o width quanto o height.
     
 Podemos definir uma cor solida em um gradiente também, quando precisarmos definir uma div dentro de uma imagem, podemos usar esse tricky
  
@@ -696,6 +698,12 @@ ELEMENTO FIGURE
 
 Podemos utilizar o elemento figure e setarmos dentro uma imagem e um figcaption, que seria a legenda.
 
+ELEMENTO LI
+
+	Para tirarmos os "Bullets" de uma lista, temos que usar o list-style: none. Assim tiramos aqueles marcadores que ficam na frente de cada list item.
+	
+		list-style: none;
+
 PROPRIEDADE MASK 
 
 Para "pintarmos" uma imagem podemos usar a propriedade mask que é bastante nova.
@@ -726,6 +734,9 @@ Uma linha, independentemente se é horizontal ou vertical, é chamada de Grid Tr
 O encontro de duas linhas ou mais de Grid horizontais com duas linhas de grid verticais são chamadas de Grid Area.
 
 Quando uma célula está ao lado de uma Grid Area, ela é chamada de grid cell.
+
+
+OBS: 
 
 DENIFINDO AS LINHAS E COLUNAS
 
@@ -794,10 +805,15 @@ DENIFINDO AS LINHAS E COLUNAS
 		os Grid itens, esses itens serão ocultos (Width: 0), logo serão exibidos apenas os itens explicitos.
 		
 			"Quero quantas colunas caberem no grid container"
+			
+			OBS: Muito útil quando sabemos que pode ser adicionado mais um item ou menos no grid, como no caso de uma lista.Assim não precisamos
+			ficar aumentando o número de colunas.
 		
 			Em poucas palavras o auto-fit cria as colunas de acordo com o width disponível.
 			
 			RESPOSIVIDADE
+			
+				OBS: AO USAR DISPLAY GRID, A RESPONSIVIDADE FICA MUITO FÁCIL, POIS QUANDO DIMINUIMOS O VIEWWIDTH, AS COLUNAS SÃO EMPILHADAS.
 			
 				Um trick bem interessante é utilizar o auto-fit com min-max para deixarmos responsivo
 				
@@ -950,12 +966,12 @@ chamados de "Explicit Grid Items".
 
 Para alinhar os GRID ITEMS NAS ÁREAS OU CÉLULAS / CONTEÚDO usamos as seguintes propriedades:
 	
-	Para alinhas os Grid items
+	Para alinhas os Grid items dentro de suas grid cells
 
 		align-items -> Default: Stretch / Center / End / Start
 		justify-items > Default: Stretch / Center / End / Start
 
-	Para alinhar um único Grid item
+	Para alinhar um único Grid item dentro de sua grid cell
 	
 		align-self
 		justify-self
@@ -1074,6 +1090,31 @@ QUANDO USAR O DISPLAY FLEX COM O DISPLAY GRID
 GRID COM IMAGENS
 
 	As imagens tem suas dimensões próprias, então elas NÃO VÃO esticar para caber na grid cell.
+	
+	Logo temos que setar as colunas e as linhas que o mesmo irá preencher.
+	
+	Para fazer uma seção com uma galeria temos que usar o seguinte trick.
+			
+	Temos que setar um elemento pai e setarmos o grid-column e o grid-row. 
+
+		<figure class="gallery__item gallery__item--1">
+			<img src="img/gal-1.jpeg" alt="Gallery Image 1" class="gallery__img">
+        </figure>
+		
+		&__item {        
+			&--1 {
+				grid-column: 1 / 4;
+				grid-row: 1 / 4;                        
+			}
+		}
+	
+	Após isto setamos que a imagem pegará 100% da altura e do comprimento do elemento pai e que a imagem irá se adaptar ao container.
+	
+		&__img {        
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
 	
 GRID COM SOBREPOSIÇÃO
 
