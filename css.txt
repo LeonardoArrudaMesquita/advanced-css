@@ -12,6 +12,8 @@ EM -> Pega o valor do elemento pai e aplica a porcentagem.
  
 REM e EM foram feitas para serem usadas em fontes porém são boas tbm para serem aplicadas em qualquer elemento pois assim fica mais fácil para
 deixar responsivo. Ao diminuir o tamanho da fonte, os outros elementos diminuirão também.
+
+"EM" e "REM" são baseadas no font-size interno do browser.
  
 O box-sizing: border-box faz o height e o width contarem tbm o padding e a border. 
  
@@ -167,7 +169,7 @@ Pasta layout -> É o que agrupa os componentes.
  
 Iremos contruir um sistema de grid, similar ao do bootstrap porém com apenas com 4 colunas.
  
-A propriedade Max-width define um limite para o width, caso passe, a linha é quebrada para linha de baixo.
+A propriedade Max-width define um limite para o width, caso passe, a linha é quebrada para linha de baixo. 
  
 A propriedade webkit é um novo conjunto de tags do css.
  
@@ -221,16 +223,27 @@ Podemos criar um círculo diretamente no css com a propriedade CIRCLE.
  
 Quando queremos exibir por inteiro uma imagem de forma responsiva, podemos usar:
  
-     HEIGHT: 100%
+    HEIGHT: 100%
     
     OU
     
     WIDTH: 100%
     
-    Irá depender de qual exibirá a imagem por completo
+    Irá depender do formato em que queremos deixar responsiva a imagem.
     
         Se width > height = Height: 100%
         Se height > width = Width: 100%
+		
+	Assim conforme ajustarmos o tamanho da tela e o container for diminuindo, a imagem diminuirá de tamanho também. 
+	
+	Também é legal definirmos a seguinte propriedade para manter um limite.
+	
+	
+		 max-height: 100%
+    
+			OU
+    
+		max-width: 100%
         
 Podemos ter SOMENTE um TRANSFORM por seletor pois há sobreposição de propriedade, então devemos deixar todos em um só
  
@@ -271,17 +284,33 @@ Propriedade Object-fit
 	Para funcionar temos que setar tanto o width quanto o height.
     
 Podemos definir uma cor solida em um gradiente também, quando precisarmos definir uma div dentro de uma imagem, podemos usar esse tricky
+
+BACKGROUND-IMAGE
  
-background-image: linear-gradient(
-        105deg,
-        rgba($color-white, .9) 0%,
-        rgba($color-white, .9) 50%,
-        transparent 50%),
-        url(../img/nat-10.jpg);
-        
-No código acima estamos setando a orientação do gradiente em 105 graus, depois setamos a cor branca do ponto 0 a 50% (Como são cores
-iguais, não terá o degrade) e então setamos a cor transparente de 50% até o final da imagem.
- 
+	background-image: linear-gradient(
+			105deg,
+			rgba($color-white, .9) 0%,
+			rgba($color-white, .9) 50%,
+			transparent 50%),
+			url(../img/nat-10.jpg);
+			
+	background-image: linear-gradient(rgba($color-secondary, .93), rgba($color-secondary, .93)), url('../img/house-3.jpeg');
+			
+	No código acima estamos setando a orientação do gradiente em 105 graus, depois setamos a cor branca do ponto 0 a 50% (Como são cores
+	iguais, não terá o degrade) e então setamos a cor transparente de 50% até o final da imagem.
+	
+	BACKGROUND-POSITION
+
+		Selecionamos o ponto focal que a imagem será posicionada.
+		
+		center / 
+		
+	BACKGROUND-SIZE
+
+		Selecionamos o tamanho da imagem referente ao seu container
+		
+			Background-size: cover; -> A imagem pegará o container inteiro, mesmo que a imagem fique distorcida ou cortada.
+	 
 O Rem é uma unidade feita para fonte, então ela pegará o valor da fonte.
  
 Caso exista algum elemento que não pegue a fonte padrão, podemos utilizar o seguinte esquema:
@@ -352,7 +381,7 @@ Um ótimo esquema para deixarmos duas div com o mesmo height, independente do co
  
 e depois colocamos o vertical-align: middle na cell em que queremos centralizar.
  
-RESPOSIVIDADE
+RESPONSIVIDADE
  
 ABORDAGENS - Mobile First vs Desktop First
  
@@ -389,6 +418,25 @@ de dispositivos com certo tamanho porém ainda é errado pq pode ter algum dispo
     A maioria dos devs não fazem isso pela dificuldade e o trabalho que isso dá.
     
 Devido a algumas questões de projeto, o forma boa de se definir um breakpoint é muito aceitável.
+
+	MEDIA QUERY - EM, REM OU PX
+	
+		O ideal é fazer as medias queries com EM pois temos os 3 seguintes casos
+		
+			1. Mudança do font-size no elemento HTML via código
+			
+				Não é ideal para "EM" e "REM" pois essas unidades são baseadas no font-size do Browser (Configuração nativa do browser).
+				
+				O Safari possui um bug que dispara as media queries com REM com o valor difinido no font-size do <HTML/>
+			
+			2. Usuário deu zoom na tela
+			
+				O Safari não adapta a unidade PX muito bem ao dar zoom no site
+			
+			3. Usuário aumentou a fonte do Browser
+			
+				O PX não funciona direito neste caso, visto que o EM e o REM são baseados no font-size do browser, ou seja, caso vc aumente o tamanho, estas unidades
+				irão sofrer um ajuste enquanto o PX continuará com o mesmo valor.
  
 DESKTOP FIRST 
  
@@ -692,7 +740,15 @@ Caso queiramos alinhar alguns elementos precisamos sempre setar o pai com displa
 
 ---------------------------------------------------------------------------------------------------------
 
-Sempre que criarmos um elemento before ou after com um position:absolute é legal setar o seu próprio elemento com position:relative
+BEFORE E AFTER
+
+	Sempre que criarmos um elemento before ou after com um position:absolute é legal setar o seu próprio elemento com position:relative;
+	
+	Outro ponto é que somos obrigados a setar a seguinte propriedade
+		
+		contain: ""
+		
+	E para fazer uma forma precisamos setar display:block pois precisaremos do width e do height.
 
 ELEMENTO FIGURE
 
@@ -735,13 +791,20 @@ O encontro de duas linhas ou mais de Grid horizontais com duas linhas de grid ve
 
 Quando uma célula está ao lado de uma Grid Area, ela é chamada de grid cell.
 
-
-OBS: 
+OBS: Quando setamos nosso container com display: grid, alguns elementos podem dar stetch, ou seja, para arrumar precisamos setar o justify-self ou o align-self.
 
 DENIFINDO AS LINHAS E COLUNAS
 
 	grid-template-rows -> Definimos as rows do nosso layout;
 	grid-template-columns -> Definimos as columns do nosso layout;
+	
+	OBS: Para setarmos linhas com tamanhos diferentes de forma responsiva utilizamos a unidade 1fr. Assim, a linha pegará o container inteiro 
+		 tirando os outros items, assim vamos adicionando as linhas com fr até ficar certinho.
+	
+		grid-template-rows: 1fr min-content 6rem 1fr;
+		
+		Acima temos o exemplo da section headers que tem um espaço grande na primeira linha, a segunda pegamos somente o tamanho do item, a terceira nós setamos 6rem (um espacinho entre as linhas) e a quarta 
+		pega mais um espaço grande.
 
 	OBS: As vezes conseguimos setar as colunas e o próprio grid já define para nós as linhas certinho;
 
@@ -896,21 +959,24 @@ Aquela célula começará na coluna 1 e irá até a última célula.
 
 MÉTODO IDEAL DE UTILIZAR DISPLAY GRID
 
-Existe um outro método para declarar a área das células que é nomeando as linhas e as colunas.
+	Existe um outro método para declarar a área das células que é nomeando as linhas e as colunas.
 
-grid-template-columns: repeat(3, [col-start] 1fr [col-end]) .7fr [grid-end];  
-  
-grid-template-rows: [header-start] 1fr 
-                    [header-end box-start] 2fr 
-                    [box-end main-start] 4fr 
-                    [main-end footer-start] 1fr
-                    [footer-end];    
+	grid-template-columns: repeat(3, [col-start] 1fr [col-end]) .7fr [grid-end];  
+	  
+	grid-template-rows: [header-start] 1fr 
+						[header-end box-start] 2fr 
+						[box-end main-start] 4fr 
+						[main-end footer-start] 1fr
+						[footer-end];    
 
-Deste jeito podemos agora utilizar os nomes invés dos números.
+	Deste jeito podemos agora utilizar os nomes invés dos números.
 
-	Ex: 
-		grid-column: col-start 1 / grid-end;
-		grid-row: box-start / main-end;
+		Ex: 
+			grid-column: col-start 1 / grid-end;
+			grid-row: box-start / main-end;
+			
+	OBS: Usar este método é EXTREMAMENTE importante visto que quando setamos as linhas / colunas com número e excluímos ou adicionamos alguma linha / coluna somos
+	obrigados a ajustar TODOS os lugares.
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -962,6 +1028,7 @@ OBS: Caso quisessemos não deixar "Células vazias (Buracos)" em nosso layout de
 Os items que não foram definidos no grid são chamados de "Implicit Grid Items", enquanto os que foram definidos são 
 chamados de "Explicit Grid Items".
 
+
 --------------------------------------------------------------------------------------------------------------
 
 Para alinhar os GRID ITEMS NAS ÁREAS OU CÉLULAS / CONTEÚDO usamos as seguintes propriedades:
@@ -978,10 +1045,10 @@ Para alinhar os GRID ITEMS NAS ÁREAS OU CÉLULAS / CONTEÚDO usamos as seguinte
 	
 	Em comparação ao Display flex que utilizamos justify-content, aqui utilizaremos justify-items.
 
-Para alinhar as GRID TRACKS (Linhas do grid) usamos as seguintes propriedades:
+	Para alinhar as GRID TRACKS (Linhas do grid) usamos as seguintes propriedades:
 
-	justify-content
-	align-content
+		justify-content
+		align-content
 	
 OBS: Quando temos um elemento de texto não é precisa usar o display para centralizar no meio, a proprieda TEXT-ALIGN já basta.
 
@@ -1065,6 +1132,15 @@ ESPAÇO ENTRE GRID ITENS
 		grid-gap: 6rem
 		
 	E para aumentar o espaço de fora do grid container usamos o margin mesmo.
+	
+CENTRALIZANDO TODAS AS TRACKS / ITEMS NO CENTRO DE UM GRID CONTAINER
+
+	Basta utilizar as seguintes propriedades
+	
+		justify-content: center; -> Removerá o espaço remanescente do items e posicionará horizontalmente no centro;
+		align-content: center; -> Removerá o espaço remanescente do items e posicionará verticalmente no centro;
+		
+	Está 
 
 CUIDADOS COM ALIGN-ITEMS
 
@@ -1130,6 +1206,10 @@ COMO UM ELEMENTO DE UMA CÉLULA PODE INVADIR OUTRA CÉLULA
 		transform: translateY(-3rem);
 		
 	Podemos usar o width ou o height para aumentarmos nosso elemento a ponto que ele ultrapasse a cell vizinha.
+	
+GRID COM MEDIA QUERIES
+
+	O uso do display grid com media queries é normal, escrevemos nossas media queries e sobrescrevemos as definições das linhas e colunas.
 
 --------------------------------------------------------------------------------------------------------------
 
